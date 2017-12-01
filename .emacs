@@ -97,3 +97,48 @@
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-agenda-files (quote ("~/temp/notes.org")))
+ '(org-startup-folded nil)
+ '(org-startup-indented t)
+ '(package-selected-packages
+   (quote
+    (auto-complete exec-path-from-shell multiple-cursors))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+;; Auto complete
+(ac-config-default)
+
+;; ESS
+; The following two lins adds /usr/local/bin to the emacs PATH.
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+(setq exec-path (append exec-path '("/usr/local/bin")))
+; Set auto complete for ESS
+(setq ess-use-auto-complete 'script-only)
+; Load ESS package
+(add-to-list 'load-path "/Users/xuyifa/ess-17.11/lisp/")
+(load "ess-site")
+
+
+;;------------
+;; Setting up the org mode filing structure
+;;------------
+(require 'org)
+(setq org-directory "~/org")
+(setq org-default-notes-file (concat org-directory "/quick-notes.org"))
+(define-key global-map "\C-cc" 'org-capture)
+
+(setq org-capture-templates
+      '(("t" "Todo" entry (file+headline "~/org/todos.org" "Tasks")
+	 "* TODO %?")
+        ("m" "Meeting" entry (file+datetree "~/org/meetings.org")
+	 "* %?\nEntered on %T")))
